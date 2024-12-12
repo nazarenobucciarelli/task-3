@@ -8,6 +8,9 @@ public class Product extends AbstractComponent {
     @FindBy(css = ".s-item__title span")
     private WebElement title;
 
+    @FindBy(css = ".s-item__price")
+    private WebElement price;
+
     public Product(WebElement root) {
         super(root);
     }
@@ -16,4 +19,7 @@ public class Product extends AbstractComponent {
         return this.title.getText();
     }
 
+    public String getPrice() {
+        return this.price.getText();
+    }
 }

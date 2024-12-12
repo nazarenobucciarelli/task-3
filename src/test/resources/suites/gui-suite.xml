@@ -3,7 +3,7 @@
 <suite name="Ebay Tests Suite" thread-count="2" parallel="methods">
     <test name="Search Test">
         <classes >
-            <class name="com.solvd.task.gui.SearchTest" />
+            <class name="com.solvd.task.gui.EbayTests" />
         </classes>
     </test>
 </suite>

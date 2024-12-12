@@ -25,9 +25,10 @@ public class ShopByCategoryModal extends AbstractComponent {
             int randomIndex = new Random().nextInt(categories.size());
             categories.get(randomIndex).click();
             logger.info("Random Category Clicked");
+            return new CategoryPage(driver);
         } catch (Exception e) {
             logger.error("Error clicking on random category", e);
+            return null;
         }
-        return new CategoryPage(driver);
     }
 }

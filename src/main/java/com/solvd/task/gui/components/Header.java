@@ -21,6 +21,9 @@ public class Header extends AbstractComponent {
     @FindBy(css = "#gh-shop-a")
     private WebElement shopByCategoryButton;
 
+    @FindBy(id = "gh-cart-n")
+    private WebElement cartNumber;
+
     @FindBy(css = "#gh-sbc-o")
     private WebElement modal;
 
@@ -44,10 +47,11 @@ public class Header extends AbstractComponent {
         try {
             searchButton.click();
             logger.info("Search button clicked");
+            return new SearchResultsPage(driver);
         } catch (Exception e) {
             logger.error("Error trying to click search button", e);
+            return null;
         }
-        return new SearchResultsPage(driver);
     }
 
     public ShopByCategoryModal clickShopByCategoryButton() {
@@ -56,10 +60,15 @@ public class Header extends AbstractComponent {
             logger.info("Shop button clicked");
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10L));
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#gh-sbc-o")));
+            return new ShopByCategoryModal(modal, driver);
         } catch (Exception e) {
             logger.error("Error trying to click shop by category button", e);
+            return null;
         }
-        return new ShopByCategoryModal(modal, driver);
+    }
+
+    public int getCartNumber() {
+        return Integer.parseInt(cartNumber.getText());
     }
 
 }
