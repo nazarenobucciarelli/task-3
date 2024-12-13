@@ -1,8 +1,6 @@
 package com.solvd.task.gui.pages;
 
-import com.solvd.task.gui.components.Dialog;
 import com.solvd.task.gui.components.SelectOptionModal;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -33,21 +31,21 @@ public class ProductPage extends AbstractPage {
     public void selectRandomOptions() {
         try {
             for (WebElement button : selectOptionButtons) {
-                SelectOptionModal selectOptionModal = clickOptionButton(button);
-                selectOptionModal.selectRandomOption();
-                logger.info("Option button clicked");
+                SelectOptionModal selectModal = clickOptionButton(button);
+                selectModal.selectRandomOption();
+                logger.info("Random option selected");
             }
         } catch (Exception e) {
-            logger.error("Error occurred while clicking option button", e);
+            logger.error("Error occurred while clicking random option", e);
         }
     }
 
     public SelectOptionModal clickOptionButton(WebElement button) {
         try {
             button.click();
-            logger.info("Click option button clicked");
+            logger.info("Options button clicked");
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10L));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span.listbox-button--expanded")));
+            wait.until(ExpectedConditions.visibilityOf(selectOptionModal));
             return new SelectOptionModal(selectOptionModal);
         } catch (Exception e) {
             logger.error("Error occurred while clicking option button", e);

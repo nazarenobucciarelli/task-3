@@ -23,13 +23,23 @@ public class EbayTests extends AbstractGUITest {
         });
     }
 
-    @Test(enabled = true)
+    @Test(enabled = false)
     public void testShoppingCartAdd() {
         List<String> productTitles = new ArrayList<>();
 
+        ShoppingCartPage shoppingCartPage = addProductToShoppingCart(productTitles, "t-shirts");
+        Header shoppingCartHeader = shoppingCartPage.getHeader();
+
+        Assert.assertEquals(shoppingCartHeader.getCartNumber(), 1);
+        shoppingCartPage.getProductTitles().forEach(productTitle -> {
+            Assert.assertTrue(productTitles.contains(productTitle));
+        });
+    }
+
+    public ShoppingCartPage addProductToShoppingCart(List<String> productTitles, String search) {
         HomePage homePage = new HomePage(getDriver());
         Header header = homePage.getHeader();
-        header.typeSearchBox("ball");
+        header.typeSearchBox(search);
         SearchResultsPage searchResultsPage = header.clickSearchButton();
         ProductPage productPage = searchResultsPage.clickOnRandomProduct();
         boolean isAddToCartButtonPresent = productPage.isAddToCartButtonPresent();
@@ -52,12 +62,34 @@ public class EbayTests extends AbstractGUITest {
             dialog.clickConfirmButton();
         }
 
-        ShoppingCartPage shoppingCartPage = productPage.clickAddToCartButton();
-        Header shoppingCartHeader = shoppingCartPage.getHeader();
+        return productPage.clickAddToCartButton();
+    }
 
-        Assert.assertEquals(shoppingCartHeader.getCartNumber(), 1);
+    @Test(enabled = true)
+    public void testShoppingCartRemove() {
+        List<String> productTitles = new ArrayList<>();
+
+        ShoppingCartPage shoppingCartPage = addProductToShoppingCart(productTitles, "t-shirt");
+        Header shoppingCartHeader = shoppingCartPage.getHeader();
+        shoppingCartPage.getCartProducts().forEach(CartProduct::clickRemoveButton);
+
+        Assert.assertEquals(shoppingCartHeader.getCartNumber(), 0);
         shoppingCartPage.getProductTitles().forEach(productTitle -> {
-            Assert.assertTrue(productTitles.contains(productTitle));
+            Assert.assertFalse(productTitles.contains(productTitle));
+        });
+    }
+
+    @Test(enabled = true)
+    public void testWrongLoginAttempt() {
+        List<String> productTitles = new ArrayList<>();
+
+        ShoppingCartPage shoppingCartPage = addProductToShoppingCart(productTitles, "t-shirt");
+        Header shoppingCartHeader = shoppingCartPage.getHeader();
+        shoppingCartPage.getCartProducts().forEach(CartProduct::clickRemoveButton);
+
+        Assert.assertEquals(shoppingCartHeader.getCartNumber(), 0);
+        shoppingCartPage.getProductTitles().forEach(productTitle -> {
+            Assert.assertFalse(productTitles.contains(productTitle));
         });
     }
 

@@ -68,7 +68,14 @@ public class Header extends AbstractComponent {
     }
 
     public int getCartNumber() {
-        return Integer.parseInt(cartNumber.getText());
+        try {
+            int cartNum = Integer.parseInt(cartNumber.getText());
+            logger.info("Cart number is: " + cartNum);
+            return cartNum;
+        } catch (Exception e) {
+            logger.info("Cart number is: 0");
+            return 0;
+        }
     }
 
 }

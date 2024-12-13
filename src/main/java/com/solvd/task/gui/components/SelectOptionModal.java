@@ -1,5 +1,6 @@
 package com.solvd.task.gui.components;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -10,6 +11,7 @@ public class SelectOptionModal extends AbstractComponent {
 
     @FindBy(css = "div[role='listbox'] div[role='option']:not([aria-disabled])")
     private List<WebElement> availableOptions;
+
 
     public SelectOptionModal(WebElement root) {
         super(root);
@@ -22,7 +24,7 @@ public class SelectOptionModal extends AbstractComponent {
                 randomIndex = 1;
             }
             availableOptions.get(randomIndex).click();
-            logger.info("Selected size " + availableOptions.get(randomIndex).getText());
+            logger.info("Selected option");
         } catch (Exception e) {
             logger.error("Error while trying to select random option", e);
         }
