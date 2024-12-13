@@ -1,14 +1,14 @@
 package com.solvd.task.gui.components;
 
-import com.solvd.task.gui.pages.SearchResultsPage;
+import com.solvd.task.gui.pages.SearchResultsEbayPage;
+import com.solvd.task.gui.pages.SignInPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
+import java.util.List;
 
 public class Header extends AbstractComponent {
 
@@ -27,11 +27,17 @@ public class Header extends AbstractComponent {
     @FindBy(css = "#gh-sbc-o")
     private WebElement modal;
 
-    WebDriver driver;
+    @FindBy(xpath = "//span[@id='gh-ug']/a")
+    private WebElement signInButton;
+
+    @FindBy(id = "gh-eb-Geo-a-default")
+    private WebElement languageButton;
+
+    @FindBy(id = "gh-eb-Geo-o")
+    private WebElement languageSwitchModal;
 
     public Header(WebElement root, WebDriver driver) {
-        super(root);
-        this.driver = driver;
+        super(root, driver);
     }
 
     public void typeSearchBox(String text) {
@@ -43,11 +49,11 @@ public class Header extends AbstractComponent {
         }
     }
 
-    public SearchResultsPage clickSearchButton() {
+    public SearchResultsEbayPage clickSearchButton() {
         try {
             searchButton.click();
             logger.info("Search button clicked");
-            return new SearchResultsPage(driver);
+            return new SearchResultsEbayPage(driver);
         } catch (Exception e) {
             logger.error("Error trying to click search button", e);
             return null;
@@ -58,8 +64,7 @@ public class Header extends AbstractComponent {
         try {
             shopByCategoryButton.click();
             logger.info("Shop button clicked");
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10L));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#gh-sbc-o")));
+            wait.until(ExpectedConditions.visibilityOf(modal));
             return new ShopByCategoryModal(modal, driver);
         } catch (Exception e) {
             logger.error("Error trying to click shop by category button", e);
@@ -78,4 +83,27 @@ public class Header extends AbstractComponent {
         }
     }
 
+    public SignInPage clickSignInButton() {
+        try {
+            signInButton.click();
+            logger.info("Sign in button clicked");
+            Thread.sleep(20000); // To solve captcha
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("userid")));
+            return new SignInPage(driver);
+        } catch (Exception e) {
+            logger.error("Error trying to click sign in button", e);
+            return null;
+        }
+    }
+
+    public LanguageSwitchModal clickLanguageMenuButton() {
+        try{
+            languageButton.click();
+            logger.info("Language menu button clicked");
+            return new LanguageSwitchModal(languageSwitchModal, driver);
+        } catch (Exception e) {
+            logger.error("Error trying to click language menu button", e);
+            return null;
+        }
+    }
 }

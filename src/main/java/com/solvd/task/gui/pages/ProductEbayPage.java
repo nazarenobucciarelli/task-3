@@ -5,12 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
 
-public class ProductPage extends AbstractPage {
+public class ProductEbayPage extends AbstractEbayPage {
 
     @FindBy(xpath = "//*[@data-testid='x-atc-action']/a")
     private WebElement addToCartButton;
@@ -24,7 +22,7 @@ public class ProductPage extends AbstractPage {
     @FindBy(css = "span.listbox-button--expanded")
     private WebElement selectOptionModal;
 
-    public ProductPage(WebDriver driver) {
+    public ProductEbayPage(WebDriver driver) {
         super(driver);
     }
 
@@ -44,20 +42,19 @@ public class ProductPage extends AbstractPage {
         try {
             button.click();
             logger.info("Options button clicked");
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10L));
             wait.until(ExpectedConditions.visibilityOf(selectOptionModal));
-            return new SelectOptionModal(selectOptionModal);
+            return new SelectOptionModal(selectOptionModal, driver);
         } catch (Exception e) {
             logger.error("Error occurred while clicking option button", e);
             return null;
         }
     }
 
-    public ShoppingCartPage clickAddToCartButton() {
+    public ShoppingCartEbayPage clickAddToCartButton() {
         try {
             addToCartButton.click();
             logger.info("Add to cart button clicked");
-            return new ShoppingCartPage(driver);
+            return new ShoppingCartEbayPage(driver);
         } catch (Exception e) {
             logger.error("Error occurred while clicking add to cart button", e);
             return null;

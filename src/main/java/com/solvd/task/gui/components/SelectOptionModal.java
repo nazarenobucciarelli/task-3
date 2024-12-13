@@ -13,8 +13,8 @@ public class SelectOptionModal extends AbstractComponent {
     private List<WebElement> availableOptions;
 
 
-    public SelectOptionModal(WebElement root) {
-        super(root);
+    public SelectOptionModal(WebElement root, WebDriver driver) {
+        super(root, driver);
     }
 
     public void selectRandomOption() {

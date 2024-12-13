@@ -4,12 +4,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CategoryPage extends AbstractPage {
+public class CategoryEbayPage extends AbstractEbayPage {
 
     @FindBy(css = "nav[role='navigation']")
     private WebElement nav;
 
-    public CategoryPage(WebDriver driver) {
+    public CategoryEbayPage(WebDriver driver) {
         super(driver);
     }
 

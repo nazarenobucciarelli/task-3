@@ -1,36 +1,37 @@
 package com.solvd.task.gui.pages;
 
 import com.solvd.task.gui.components.Product;
+import com.solvd.task.gui.components.SearchResultsSideBar;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SearchResultsPage extends AbstractPage {
+public class SearchResultsEbayPage extends AbstractEbayPage {
 
     @FindBy(css = ".srp-results .s-item")
-    List<WebElement> productElements;
+    private List<WebElement> productElements;
 
-    public SearchResultsPage(WebDriver driver) {
+    @FindBy(css = "div.srp-rail__left")
+    private WebElement sideBar;
+
+    public SearchResultsEbayPage(WebDriver driver) {
         super(driver);
     }
 
     public List<Product> getProducts() {
         return productElements.stream()
-                .map(Product::new)
+                .map(product -> new Product(product, driver))
                 .collect(Collectors.toList());
     }
 
-    public ProductPage clickOnRandomProduct() {
+    public ProductEbayPage clickOnRandomProduct() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10L));
             wait.until(webDriver -> !productElements.isEmpty() && productElements.get(0).isDisplayed());
             int randomIndex = new Random().nextInt(productElements.size());
             productElements.get(randomIndex).findElement(By.cssSelector(".s-item__title")).click();
@@ -45,9 +46,20 @@ public class SearchResultsPage extends AbstractPage {
                     break;
                 }
             }
-            return new ProductPage(driver);
+            return new ProductEbayPage(driver);
         } catch (Exception e) {
             logger.error("Error while clicking random product", e);
+            return null;
+        }
+    }
+
+    public SearchResultsSideBar getSideBar() {
+        try{
+            SearchResultsSideBar searchResultsSideBar =  new SearchResultsSideBar(sideBar, driver);
+            logger.info("Search results sidebar found");
+            return searchResultsSideBar;
+        } catch (Exception e) {
+            logger.error("Error while getting search results sidebar", e);
             return null;
         }
     }

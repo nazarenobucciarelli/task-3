@@ -1,13 +1,9 @@
 package com.solvd.task.gui.components;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 public class CartProduct extends AbstractComponent{
 
@@ -17,18 +13,14 @@ public class CartProduct extends AbstractComponent{
     @FindBy(css = ".item-title a")
     private WebElement title;
 
-    private WebDriver driver;
-
     public CartProduct(WebElement root, WebDriver driver) {
-        super(root);
-        this.driver = driver;
+        super(root, driver);
     }
 
     public void clickRemoveButton() {
         try {
             removeButton.click();
             logger.info("Remove button clicked");
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             wait.until(ExpectedConditions.invisibilityOf(title));
         } catch (Exception e) {
             logger.error("Error while clicking remove button", e);
