@@ -1,5 +1,6 @@
 package com.solvd.task.gui.components;
 
+import com.solvd.task.gui.pages.CategoryEbayPage;
 import com.solvd.task.gui.pages.SearchResultsEbayPage;
 import com.solvd.task.gui.pages.SignInPage;
 import org.openqa.selenium.By;
@@ -7,8 +8,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
-import java.util.List;
 
 public class Header extends AbstractComponent {
 
@@ -36,6 +35,9 @@ public class Header extends AbstractComponent {
     @FindBy(id = "gh-eb-Geo-o")
     private WebElement languageSwitchModal;
 
+    @FindBy(id = "gh-cat")
+    private WebElement allCategoriesSelect;
+
     public Header(WebElement root, WebDriver driver) {
         super(root, driver);
     }
@@ -56,6 +58,17 @@ public class Header extends AbstractComponent {
             return new SearchResultsEbayPage(driver);
         } catch (Exception e) {
             logger.error("Error trying to click search button", e);
+            return null;
+        }
+    }
+
+    public CategoryEbayPage clickSearchButtonByCategory() {
+        try {
+            searchButton.click();
+            logger.info("Search button by category clicked");
+            return new CategoryEbayPage(driver);
+        } catch (Exception e) {
+            logger.error("Error trying to click search button by category", e);
             return null;
         }
     }
@@ -106,4 +119,16 @@ public class Header extends AbstractComponent {
             return null;
         }
     }
+
+    public Select clickAllCategoriesSelect() {
+        try{
+            allCategoriesSelect.click();
+            logger.info("All categories button clicked");
+            return new Select(allCategoriesSelect, driver);
+        } catch (Exception e) {
+            logger.error("Error trying to click all categories button", e);
+            return null;
+        }
+    }
+
 }

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class EbayTests extends AbstractGUITest {
 
@@ -46,7 +45,7 @@ public class EbayTests extends AbstractGUITest {
         SearchResultsEbayPage searchResultsPage = header.clickSearchButton();
         ProductEbayPage productPage = searchResultsPage.clickOnRandomProduct();
         boolean isAddToCartButtonPresent = productPage.isAddToCartButtonPresent();
-        while(!isAddToCartButtonPresent){
+        while (!isAddToCartButtonPresent) {
             getDriver().close();
 
             Set<String> windowHandles = getDriver().getWindowHandles();
@@ -126,8 +125,13 @@ public class EbayTests extends AbstractGUITest {
     }
 
     @Test(enabled = true)
-    public void testCategoriesShowResults() {
-
+    public void testEverythingElseCategoryShowResults() {
+        HomeEbayPage homePage = new HomeEbayPage(getDriver());
+        Header header = homePage.getHeader();
+        Select select = header.clickAllCategoriesSelect();
+        select.clickOption(select.getOptions().size() - 1);
+        CategoryEbayPage categoryEbayPage = header.clickSearchButtonByCategory();
+        Assert.assertFalse(categoryEbayPage.getItems().isEmpty());
     }
 
 }
